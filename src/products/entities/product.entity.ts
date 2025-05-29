@@ -1,5 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Brand } from './brand.entity';
 @Entity('Products') //Table name
 export class Product {
   @PrimaryGeneratedColumn()
@@ -23,6 +29,7 @@ export class Product {
   @Column('text')
   description: string;
 
-  @Column()
-  brand_id: number;
+  @ManyToOne(() => Brand, (brand) => brand.products)
+  @JoinColumn({ name: 'brand_id' }) // FK
+  brand: Brand;
 }
