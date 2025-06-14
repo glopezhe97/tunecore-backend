@@ -5,6 +5,10 @@ import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './products/entities/product.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Brand } from './products/entities/brand.entity';
+import { Category } from './products/entities/category.entity';
+import { Subcategory } from './products/entities/subcategory.entity';
+import { ProductCategorySubcategory } from './products/entities/product-category-subcategory.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Lee .env
@@ -18,7 +22,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: config.get('DATABASE_USER'),
         password: config.get('DATABASE_PASSWORD'),
         database: config.get('DATABASE_NAME'),
-        entities: [Product],
+        entities: [
+          Product,
+          Brand,
+          Category,
+          Subcategory,
+          ProductCategorySubcategory,
+        ],
         synchronize: true,
       }),
     }),
