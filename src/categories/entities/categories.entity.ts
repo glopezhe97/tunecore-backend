@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Subcategory } from './subcategory.entity';
+import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
 @Entity('Category') //Table name
 export class Category {
   @PrimaryGeneratedColumn()
@@ -8,6 +8,6 @@ export class Category {
   @Column()
   name: string;
 
-  @OneToMany(() => Subcategory, (subcategory) => subcategory.categoriy)
+  @OneToMany(() => Subcategory, (subcategory) => subcategory.category)
   subcategories: Subcategory[];
 }

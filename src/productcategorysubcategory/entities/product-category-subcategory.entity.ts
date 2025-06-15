@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Subcategory } from './subcategory.entity';
-import { Product } from './product.entity';
-import { Category } from './category.entity';
+import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
+import { Product } from 'src/products/entities/product.entity';
+import { Category } from 'src/categories/entities/categories.entity';
 
 @Entity('Product_category_subcategory') //Table name
 export class ProductCategorySubcategory {

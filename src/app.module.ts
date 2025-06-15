@@ -5,10 +5,14 @@ import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './products/entities/product.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Brand } from './products/entities/brand.entity';
-import { Category } from './products/entities/category.entity';
-import { Subcategory } from './products/entities/subcategory.entity';
-import { ProductCategorySubcategory } from './products/entities/product-category-subcategory.entity';
+import { Brand } from './brands/entities/brands.entity';
+import { Category } from './categories/entities/categories.entity';
+import { Subcategory } from './subcategories/entities/subcategories.entity';
+import { ProductCategorySubcategory } from './productcategorysubcategory/entities/product-category-subcategory.entity';
+import { BrandsModule } from './brands/brands.module';
+import { CategoriesModule } from './categories/categories.module';
+import { SubcategoriesModule } from './subcategories/subcategories.module';
+import { ProductcategorysubcategoryModule } from './productcategorysubcategory/productcategorysubcategory.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Lee .env
@@ -33,6 +37,11 @@ import { ProductCategorySubcategory } from './products/entities/product-category
       }),
     }),
     ProductsModule,
+    BrandsModule,
+    BrandsModule,
+    CategoriesModule,
+    SubcategoriesModule,
+    ProductcategorysubcategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

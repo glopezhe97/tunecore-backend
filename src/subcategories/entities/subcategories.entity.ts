@@ -1,11 +1,11 @@
 import {
-  Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Entity,
 } from 'typeorm';
-import { Category } from './category.entity';
+import { Category } from 'src/categories/entities/categories.entity';
 @Entity('Subcategory') //Table name
 export class Subcategory {
   @PrimaryGeneratedColumn()
@@ -16,5 +16,5 @@ export class Subcategory {
 
   @ManyToOne(() => Category, (category) => category.subcategories)
   @JoinColumn({ name: 'category_id' }) //FK
-  categoriy: Category;
+  category: Category;
 }

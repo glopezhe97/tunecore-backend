@@ -30,6 +30,9 @@ export class ProductResponseDto {
   img_url: string;
 
   @IsString()
+  brand_name: string;
+
+  @IsString()
   category_name: string;
 
   @IsString()

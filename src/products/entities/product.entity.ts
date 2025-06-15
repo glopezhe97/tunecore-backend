@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Brand } from './brand.entity';
+import { Brand } from 'src/brands/entities/brands.entity';
 @Entity('Products') //Table name
 export class Product {
   @PrimaryGeneratedColumn()

@@ -6,9 +6,9 @@ import { ProductResponseDto } from './dtos/product-response.dto/product-response
 export class ProductsController {
   constructor(private productService: ProductsService) {}
   @Get()
-  async getProducts(
+  async getAllProducts(
     @Query('name') name: string = '',
   ): Promise<ProductResponseDto[]> {
-    return this.productService.getProducts(name);
+    return this.productService.getAllProducts(name);
   }
 }
