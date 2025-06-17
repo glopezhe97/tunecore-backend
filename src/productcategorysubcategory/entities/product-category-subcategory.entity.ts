@@ -6,7 +6,7 @@ import { Category } from 'src/categories/entities/categories.entity';
 @Entity('Product_category_subcategory') //Table name
 export class ProductCategorySubcategory {
   @PrimaryColumn()
-  product_id: Product;
+  product_id: number;
 
   @PrimaryColumn()
   category_id: number;
@@ -16,7 +16,7 @@ export class ProductCategorySubcategory {
 
   @ManyToOne(() => Product)
   @JoinColumn({ name: 'product_id' }) //FK
-  product: number;
+  product: Product;
 
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'category_id' }) //FK

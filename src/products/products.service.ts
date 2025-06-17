@@ -91,6 +91,8 @@ export class ProductsService {
       const subcategory = await this.subcategoryRepository.findOne({
         where: { name: productCreateDto.subcategory_name },
       });
+      if (!category) throw new NotFoundException('Category not found');
+      if (!subcategory) throw new NotFoundException('Subcategory not found');
       console.log(subcategory);
       // Create product
       const newProduct: Product = this.productRepository.create({
@@ -112,26 +114,8 @@ export class ProductsService {
       });
       return saveNewProduct;
     } catch (err) {
-      console.log(err.message);
-      return err;
+      console.error('Create product error:', err);
+      throw err instanceof Error ? err : new Error('Unexpected error');
     }
   }
 }
-// async getProducts(name: string = ''): Promise<ProductResponseDto[]> {
-//   const products =
-//     name.length > 0
-//       ? await this.productRepository.find({
-//           where: { name: ILike(`%${name}%`) },
-//         })
-//       : await this.productRepository.find();
-
-//   // Transformar entidades a DTOs
-//   return products.map((product) => ({
-//     name: product.name,
-//     price: product.price,
-//     isOnSale: product.isOnSale,
-//     stock: product.stock,
-//     description: product.description,
-//     img_url: product.img_url,
-//   }));
-// }
