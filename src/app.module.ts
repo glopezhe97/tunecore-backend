@@ -13,6 +13,7 @@ import { BrandsModule } from './brands/brands.module';
 import { CategoriesModule } from './categories/categories.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { ProductcategorysubcategoryModule } from './productcategorysubcategory/productcategorysubcategory.module';
+import { TypeModule } from './type/type.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Lee .env
@@ -42,6 +43,7 @@ import { ProductcategorysubcategoryModule } from './productcategorysubcategory/p
     CategoriesModule,
     SubcategoriesModule,
     ProductcategorysubcategoryModule,
+    TypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
