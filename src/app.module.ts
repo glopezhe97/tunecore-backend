@@ -14,6 +14,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { ProductcategorysubcategoryModule } from './productcategorysubcategory/productcategorysubcategory.module';
 import { TypeModule } from './type/type.module';
+import { Type } from './type/entities/type.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Lee .env
@@ -33,6 +34,7 @@ import { TypeModule } from './type/type.module';
           Category,
           Subcategory,
           ProductCategorySubcategory,
+          Type,
         ],
         synchronize: true,
       }),
