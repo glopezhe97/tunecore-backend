@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Brand } from 'src/brands/entities/brands.entity';
+import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
 @Entity('Products') //Table name
 export class Product {
   @PrimaryGeneratedColumn()
@@ -32,4 +34,10 @@ export class Product {
   @ManyToOne(() => Brand, (brand) => brand.products)
   @JoinColumn({ name: 'brand_id' }) // FK
   brand: Brand;
+
+  @OneToMany(
+    () => ProductProductType,
+    (productProductType) => productProductType.product,
+  )
+  productProductTypes: ProductProductType[];
 }

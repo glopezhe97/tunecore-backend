@@ -8,6 +8,7 @@ import { Brand } from 'src/brands/entities/brands.entity';
 import { Category } from 'src/categories/entities/categories.entity';
 import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
 import { ProductCategorySubcategory } from 'src/productcategorysubcategory/entities/product-category-subcategory.entity';
+import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -21,6 +22,8 @@ export class ProductsService {
     private subcategoryRepository: Repository<Subcategory>,
     @InjectRepository(ProductCategorySubcategory)
     private productCategorySubcategoryRepository: Repository<ProductCategorySubcategory>,
+    @InjectRepository(ProductProductType)
+    private productProductTypeRepository: Repository<ProductProductType>,
   ) {}
 
   // Get all products
@@ -43,6 +46,16 @@ export class ProductsService {
         'subcategory',
         'subcategory.subcategory_id = pcs.subcategory_id',
       )
+      .leftJoin(
+        'Product_productType',
+        'productProductType',
+        'productProductType.product_id = product.product_id',
+      )
+      .leftJoin(
+        'ProductType',
+        'productType',
+        'productType.productType_id = productProductType.productType_id',
+      )
       .select([
         'product.name AS name',
         'product.price AS price',
@@ -53,24 +66,48 @@ export class ProductsService {
         'brand.name AS brand_name',
         'category.name AS category_name',
         'subcategory.name AS subcategory_name',
-      ]);
+        'GROUP_CONCAT(productType.name) AS product_type_names',
+      ])
+      .groupBy('product.product_id')
+      .addGroupBy('brand.name')
+      .addGroupBy('category.name')
+      .addGroupBy('subcategory.name');
     if (name.length > 0) {
       query.where('LOWER(product.name) LIKE :name', {
         name: `%${name.toLowerCase()}%`,
       });
     }
-    const rawProducts = await query.getRawMany();
-    return rawProducts.map((product: ProductResponseDto) => ({
-      name: product.name,
-      price: product.price,
-      isOnSale: product.isOnSale,
-      stock: product.stock,
-      description: product.description,
-      img_url: product.img_url,
-      brand_name: product.brand_name,
-      category_name: product.category_name,
-      subcategory_name: product.subcategory_name,
-    }));
+
+    //Put in products/dtos
+    interface RawProductResult {
+      name: string;
+      price: string | number;
+      isOnSale: number;
+      stock: string | number;
+      description: string;
+      img_url: string;
+      brand_name: string;
+      category_name: string;
+      subcategory_name: string;
+      product_type_names: string | null;
+    }
+
+    const rawProducts = await query.getRawMany<RawProductResult>();
+
+    return rawProducts.map(
+      (product): ProductResponseDto => ({
+        name: product.name,
+        price: Number(product.price),
+        isOnSale: Boolean(product.isOnSale),
+        stock: Number(product.stock),
+        description: product.description,
+        img_url: product.img_url,
+        brand_name: product.brand_name,
+        category_name: product.category_name,
+        subcategory_name: product.subcategory_name,
+        product_type_names: product.product_type_names?.split(',') ?? [],
+      }),
+    );
   }
 
   async createProduct(productCreateDto: ProductCreateDto): Promise<Product> {

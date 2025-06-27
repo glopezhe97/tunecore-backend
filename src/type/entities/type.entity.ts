@@ -1,8 +1,16 @@
-import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
+import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
 @Entity('ProductType') //Table name
 export class Type {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   productType_id: number;
 
   @Column()
@@ -14,4 +22,10 @@ export class Type {
 
   @Column()
   subcategory_id: number; // columna FK
+
+  @OneToMany(
+    () => ProductProductType,
+    (productProductType) => productProductType.type,
+  )
+  productProductType: ProductProductType[];
 }

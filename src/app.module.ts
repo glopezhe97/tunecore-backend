@@ -15,6 +15,7 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { ProductcategorysubcategoryModule } from './productcategorysubcategory/productcategorysubcategory.module';
 import { TypeModule } from './type/type.module';
 import { Type } from './type/entities/type.entity';
+import { ProductProductType } from './product-type/entities/product-product-type/product-product-type';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // Lee .env
@@ -35,6 +36,7 @@ import { Type } from './type/entities/type.entity';
           Subcategory,
           ProductCategorySubcategory,
           Type,
+          ProductProductType,
         ],
         synchronize: true,
       }),
@@ -46,6 +48,7 @@ import { Type } from './type/entities/type.entity';
     SubcategoriesModule,
     ProductcategorysubcategoryModule,
     TypeModule,
+    ProductProductType,
   ],
   controllers: [AppController],
   providers: [AppService],

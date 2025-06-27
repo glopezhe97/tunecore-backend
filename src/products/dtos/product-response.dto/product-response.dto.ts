@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsInt,
   IsNumber,
@@ -31,6 +32,10 @@ export class ProductResponseDto {
 
   @IsString()
   brand_name: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  product_type_names: string[];
 
   @IsString()
   category_name: string;

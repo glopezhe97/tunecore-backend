@@ -7,6 +7,8 @@ import { Category } from 'src/categories/entities/categories.entity';
 import { Brand } from 'src/brands/entities/brands.entity';
 import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
 import { ProductCategorySubcategory } from 'src/productcategorysubcategory/entities/product-category-subcategory.entity';
+import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
+import { Type } from 'src/type/entities/type.entity';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ProductCategorySubcategory } from 'src/productcategorysubcategory/entit
       Category,
       Subcategory,
       ProductCategorySubcategory,
+      ProductProductType,
+      Type,
     ]),
   ],
   controllers: [ProductsController],
