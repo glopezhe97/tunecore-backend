@@ -9,6 +9,7 @@ import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
 import { ProductCategorySubcategory } from 'src/productcategorysubcategory/entities/product-category-subcategory.entity';
 import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
 import { Type } from 'src/type/entities/type.entity';
+import { Images } from 'src/images/entities/images.entity/images.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Type } from 'src/type/entities/type.entity';
       ProductCategorySubcategory,
       ProductProductType,
       Type,
+      Images,
     ]),
   ],
   controllers: [ProductsController],

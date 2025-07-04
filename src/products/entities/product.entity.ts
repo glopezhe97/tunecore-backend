@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Brand } from 'src/brands/entities/brands.entity';
 import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
+import { Images } from 'src/images/entities/images.entity/images.entity';
 @Entity('Products') //Table name
 export class Product {
   @PrimaryGeneratedColumn()
@@ -25,9 +26,6 @@ export class Product {
   @Column()
   stock: number;
 
-  @Column()
-  img_url: string;
-
   @Column('text')
   description: string;
 
@@ -40,4 +38,7 @@ export class Product {
     (productProductType) => productProductType.product,
   )
   productProductTypes: ProductProductType[];
+
+  @OneToMany(() => Images, (image) => image.product)
+  images: Images;
 }

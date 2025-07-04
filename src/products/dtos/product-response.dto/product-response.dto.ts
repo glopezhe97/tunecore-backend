@@ -27,8 +27,9 @@ export class ProductResponseDto {
   @IsString()
   description: string;
 
-  @IsString()
-  img_url: string;
+  @IsArray()
+  @IsString({ each: true })
+  img_url: string[];
 
   @IsString()
   brand_name: string;
