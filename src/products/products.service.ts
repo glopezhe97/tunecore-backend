@@ -65,6 +65,7 @@ export class ProductsService {
         'product.price AS price',
         'product.isOnSale AS isOnSale',
         'product.stock AS stock',
+        'product.featured AS featured',
         'product.description AS description',
         'GROUP_CONCAT(DISTINCT images.route) AS img_url',
         'brand.name AS brand_name',
@@ -88,6 +89,7 @@ export class ProductsService {
       price: string | number;
       isOnSale: number;
       stock: string | number;
+      featured: boolean;
       description: string;
       img_url: string;
       brand_name: string;
@@ -103,6 +105,7 @@ export class ProductsService {
         name: product.name,
         price: Number(product.price),
         isOnSale: Boolean(product.isOnSale),
+        featured: Boolean(product.featured),
         stock: Number(product.stock),
         description: product.description,
         img_url: product.img_url?.split(',') ?? [], // Split img_url from RawProducts

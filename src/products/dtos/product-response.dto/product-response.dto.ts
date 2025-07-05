@@ -20,6 +20,10 @@ export class ProductResponseDto {
   @IsOptional()
   isOnSale?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  featured?: boolean;
+
   @IsInt()
   @IsPositive()
   stock: number;

@@ -21,6 +21,9 @@ export class Product {
   price: number;
 
   @Column({ default: false })
+  featured: boolean;
+
+  @Column({ default: false })
   isOnSale: boolean;
 
   @Column()
