@@ -35,6 +35,10 @@ export class ProductResponseDto {
   @IsString({ each: true })
   img_url: string[];
 
+  @IsArray()
+  @IsInt()
+  disposition: number[];
+
   @IsString()
   brand_name: string;
 

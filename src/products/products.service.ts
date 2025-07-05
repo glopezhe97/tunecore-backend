@@ -68,6 +68,7 @@ export class ProductsService {
         'product.featured AS featured',
         'product.description AS description',
         'GROUP_CONCAT(DISTINCT images.route) AS img_url',
+        'GROUP_CONCAT(DISTINCT images.disposition) AS disposition',
         'brand.name AS brand_name',
         'category.name AS category_name',
         'subcategory.name AS subcategory_name',
@@ -92,6 +93,7 @@ export class ProductsService {
       featured: boolean;
       description: string;
       img_url: string;
+      disposition: string;
       brand_name: string;
       category_name: string;
       subcategory_name: string;
@@ -109,6 +111,9 @@ export class ProductsService {
         stock: Number(product.stock),
         description: product.description,
         img_url: product.img_url?.split(',') ?? [], // Split img_url from RawProducts
+        disposition: product.disposition
+          ? product.disposition.split(',').map((d) => parseInt(d, 10))
+          : [],
         brand_name: product.brand_name,
         category_name: product.category_name,
         subcategory_name: product.subcategory_name,
