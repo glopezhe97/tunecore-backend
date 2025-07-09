@@ -13,6 +13,7 @@ export class CategoriesServiceService {
     const categories = await this.categoryRepository.find();
     return categories.map((category) => ({
       name: category.name,
+      image: category.image,
     }));
   }
 }
