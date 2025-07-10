@@ -17,6 +17,7 @@ export class SubcategoriesServiceService {
     const subcategories = await this.subcategoryRepository.find();
     return subcategories.map((subcategories) => ({
       name: subcategories.name,
+      image: subcategories.image,
     }));
   }
   async getAllSubcategoriesByCategory(
@@ -34,6 +35,7 @@ export class SubcategoriesServiceService {
     });
     return subcategories.map((subcategories) => ({
       name: subcategories.name,
+      image: subcategories.image,
     }));
   }
 }

@@ -16,6 +16,9 @@ export class Subcategory {
   @Column()
   name: string;
 
+  @Column()
+  image: string;
+
   @ManyToOne(() => Category, (category) => category.subcategories)
   @JoinColumn({ name: 'category_id' }) //FK
   category: Category;
