@@ -10,7 +10,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
+  app.enableCors({
+    origin: 'http://localhost:4200', // permite solo tu frontend
+  });
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
