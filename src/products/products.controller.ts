@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductResponseDto } from './dtos/product-response.dto/product-response.dto';
 // import { ProductCreateDto } from './dtos/product-create.dto/product-create.dto';
@@ -12,6 +12,14 @@ export class ProductsController {
     @Query('name') name: string = '',
   ): Promise<ProductResponseDto[]> {
     return this.productService.getAllProducts(name);
+  }
+
+  @Get(':subcategory/by-type/:type')
+  async getAllProductsByType(
+    @Param('type') type: string,
+    @Param('subcategory') subcategory: string,
+  ): Promise<ProductResponseDto[]> {
+    return this.productService.getAllProductsByType(type, subcategory);
   }
 
   // @Post()

@@ -10,6 +10,7 @@ import { Subcategory } from 'src/subcategories/entities/subcategories.entity';
 import { ProductCategorySubcategory } from 'src/productcategorysubcategory/entities/product-category-subcategory.entity';
 import { ProductProductType } from 'src/product-type/entities/product-product-type/product-product-type';
 import { Images } from 'src/images/entities/images.entity/images.entity';
+import { RawProductResultDto } from 'src/shared/dtos/raw-product-result.dto/raw-product-result.dto';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -79,28 +80,88 @@ export class ProductsService {
       .addGroupBy('category.name')
       .addGroupBy('subcategory.name');
     if (name.length > 0) {
-      query.where('LOWER(product.name) LIKE :name', {
+      query.andWhere('LOWER(product.name) LIKE :name', {
         name: `%${name.toLowerCase()}%`,
       });
     }
 
-    //Put in products/dtos
-    interface RawProductResult {
-      name: string;
-      price: string | number;
-      isOnSale: number;
-      stock: string | number;
-      featured: boolean;
-      description: string;
-      img_url: string;
-      disposition: string;
-      brand_name: string;
-      category_name: string;
-      subcategory_name: string;
-      product_type_names: string | null;
-    }
+    const rawProducts = await query.getRawMany<RawProductResultDto>();
 
-    const rawProducts = await query.getRawMany<RawProductResult>();
+    return rawProducts.map(
+      (product): ProductResponseDto => ({
+        name: product.name,
+        price: Number(product.price),
+        isOnSale: Boolean(product.isOnSale),
+        featured: Boolean(product.featured),
+        stock: Number(product.stock),
+        description: product.description,
+        img_url: product.img_url?.split(',') ?? [], // Split img_url from RawProducts
+        disposition: product.disposition
+          ? product.disposition.split(',').map((d) => parseInt(d, 10))
+          : [],
+        brand_name: product.brand_name,
+        category_name: product.category_name,
+        subcategory_name: product.subcategory_name,
+        product_type_names: product.product_type_names?.split(',') ?? [], // Split product_type_names from RawProducts
+      }),
+    );
+  }
+
+  //Get all products by type
+  async getAllProductsByType(type: string, subcategory: string): Promise<ProductResponseDto[]> {
+    const query = this.productRepository
+      .createQueryBuilder('product')
+      .leftJoin('product.brand', 'brand')
+      .leftJoin(
+        'Product_category_subcategory',
+        'pcs',
+        'pcs.product_id = product.product_id',
+      )
+      .leftJoin(
+        'Category',
+        'category',
+        'category.category_id = pcs.category_id',
+      )
+      .leftJoin(
+        'Subcategory',
+        'subcategory',
+        'subcategory.subcategory_id = pcs.subcategory_id',
+      )
+      .leftJoin(
+        'Product_productType',
+        'productProductType',
+        'productProductType.product_id = product.product_id',
+      )
+      .leftJoin(
+        'ProductType',
+        'productType',
+        'productType.productType_id = productProductType.productType_id',
+      )
+      .leftJoin('Images', 'images', 'images.product_id = product.product_id')
+      .select([
+        'product.name AS name',
+        'product.price AS price',
+        'product.isOnSale AS isOnSale',
+        'product.stock AS stock',
+        'product.featured AS featured',
+        'product.description AS description',
+        'GROUP_CONCAT(DISTINCT images.route) AS img_url',
+        'GROUP_CONCAT(DISTINCT images.disposition) AS disposition',
+        'brand.name AS brand_name',
+        'category.name AS category_name',
+        'subcategory.name AS subcategory_name',
+        'GROUP_CONCAT(DISTINCT productType.name) AS product_type_names',
+      ])
+      .where('LOWER(productType.name) = LOWER(:type)', { type })
+      .andWhere('LOWER(subcategory.name) = LOWER(:subcategory)', {
+        subcategory,
+      })
+      .groupBy('product.product_id')
+      .addGroupBy('brand.name')
+      .addGroupBy('category.name')
+      .addGroupBy('subcategory.name');
+
+    const rawProducts = await query.getRawMany<RawProductResultDto>();
 
     return rawProducts.map(
       (product): ProductResponseDto => ({
